@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import WorkoutTab from "./src/WorkoutTab.jsx";
 import { Leaf, Footprints, Moon, Droplets, Apple, Dumbbell, ChevronRight, Check, Sparkles, Sunrise, Sun, Sunset, Cookie, Clock } from "lucide-react";
 
 // Design tokens
@@ -716,30 +717,25 @@ export default function App() {
         <div style={{
           marginTop: 32, display: "flex", background: "#EDE6D6", borderRadius: 12, padding: 4, gap: 4
         }}>
-          <button
-            onClick={() => setDashTab("habits")}
-            style={{
-              flex: 1, padding: "9px 0", borderRadius: 9, border: "none", cursor: "pointer",
-              background: dashTab === "habits" ? "#FFFFFF" : "transparent",
-              fontFamily: "Inter, sans-serif", fontSize: 13.5, fontWeight: 600,
-              color: dashTab === "habits" ? "#2E2B26" : "#8A8474",
-              boxShadow: dashTab === "habits" ? "0 1px 3px rgba(0,0,0,0.08)" : "none"
-            }}
-          >
-            Ieradumi
-          </button>
-          <button
-            onClick={() => setDashTab("meals")}
-            style={{
-              flex: 1, padding: "9px 0", borderRadius: 9, border: "none", cursor: "pointer",
-              background: dashTab === "meals" ? "#FFFFFF" : "transparent",
-              fontFamily: "Inter, sans-serif", fontSize: 13.5, fontWeight: 600,
-              color: dashTab === "meals" ? "#2E2B26" : "#8A8474",
-              boxShadow: dashTab === "meals" ? "0 1px 3px rgba(0,0,0,0.08)" : "none"
-            }}
-          >
-            Ēdieni
-          </button>
+          {[
+            { id: "habits",  label: "Ieradumi" },
+            { id: "meals",   label: "Ēdieni" },
+            { id: "workout", label: "Treniņi" },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setDashTab(tab.id)}
+              style={{
+                flex: 1, padding: "9px 0", borderRadius: 9, border: "none", cursor: "pointer",
+                background: dashTab === tab.id ? "#FFFFFF" : "transparent",
+                fontFamily: "Inter, sans-serif", fontSize: 12.5, fontWeight: 600,
+                color: dashTab === tab.id ? "#2E2B26" : "#8A8474",
+                boxShadow: dashTab === tab.id ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {dashTab === "habits" ? (
@@ -838,6 +834,8 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {dashTab === "workout" && <WorkoutTab />}
 
         <div style={{
           marginTop: 20, padding: "14px 16px", background: "#EDE6D6", borderRadius: 12,
