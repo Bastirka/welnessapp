@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Leaf, Footprints, Moon, Droplets, Apple, Dumbbell, ChevronRight, Check, Sparkles, Sunrise, Sun, Sunset, Cookie, Clock } from "lucide-react";
 
 // Design tokens
@@ -363,14 +363,112 @@ function MealCard({ meal }) {
   );
 }
 
+function LoginScreen({ onLogin }) {
+  const [name, setName] = useState("");
+  const linkTag = <link rel="stylesheet" href={FONT_LINK} />;
+  const containerStyle = {
+    minHeight: "100vh", background: "#FAF7F0", fontFamily: "Inter, sans-serif",
+    color: "#2E2B26", display: "flex", justifyContent: "center", padding: "32px 20px",
+  };
+  return (
+    <div style={containerStyle}>
+      {linkTag}
+      <div style={{ width: "100%", maxWidth: 420 }}>
+        <Logo />
+        <div style={{ marginTop: 56 }}>
+          <span style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 11, color: "#7A8B6F", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+            Добро пожаловать
+          </span>
+          <h1 style={{ fontFamily: "Fraunces, serif", fontWeight: 500, fontSize: 34, lineHeight: 1.15, margin: "16px 0 0", color: "#2E2B26" }}>
+            Как тебя зовут?
+          </h1>
+          <p style={{ fontSize: 15, lineHeight: 1.6, color: "#5C5647", marginTop: 14 }}>
+            Твоё имя используется только локально, чтобы сохранить твой прогресс на этом устройстве.
+          </p>
+        </div>
+        <div style={{ marginTop: 32 }}>
+          <input
+            type="text"
+            placeholder="Твоё имя"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && name.trim() && onLogin(name.trim())}
+            style={{
+              width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid #DCD5C4",
+              background: "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: 15, color: "#2E2B26",
+              outline: "none", boxSizing: "border-box",
+            }}
+            autoFocus
+          />
+        </div>
+        <button
+          onClick={() => name.trim() && onLogin(name.trim())}
+          disabled={!name.trim()}
+          style={{
+            marginTop: 16, width: "100%", padding: "15px 20px", borderRadius: 14,
+            background: name.trim() ? "#4A5540" : "#DCD5C4", color: "#FAF7F0", border: "none",
+            fontFamily: "Inter, sans-serif", fontSize: 15, fontWeight: 600,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            cursor: name.trim() ? "pointer" : "not-allowed",
+          }}
+        >
+          Продолжить <ChevronRight size={17} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
-  const [step, setStep] = useState("intro"); // intro -> pace -> habits -> dashboard
+  const [user, setUser] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("zarins_user")); } catch { return null; }
+  });
+  const [step, setStep] = useState("intro");
   const [pace, setPace] = useState(null);
   const [selectedHabits, setSelectedHabits] = useState([]);
   const [checkedToday, setCheckedToday] = useState([]);
-  const [activeDays, setActiveDays] = useState([0, 1, 2]); // demo: Mon-Wed done
-  const [dashTab, setDashTab] = useState("habits"); // habits | meals
+  const [activeDays, setActiveDays] = useState([]);
+  const [dashTab, setDashTab] = useState("habits");
   const [mealSection, setMealSection] = useState("breakfast");
+
+  // Load saved profile when user is set
+  useEffect(() => {
+    if (!user) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem(`zarins_profile_${user.name}`));
+      if (saved) {
+        if (saved.step) setStep(saved.step);
+        if (saved.pace) setPace(saved.pace);
+        if (saved.selectedHabits) setSelectedHabits(saved.selectedHabits);
+        if (saved.checkedToday) setCheckedToday(saved.checkedToday);
+        if (saved.activeDays) setActiveDays(saved.activeDays);
+      }
+    } catch {}
+  }, [user?.name]);
+
+  // Save profile on every state change
+  useEffect(() => {
+    if (!user) return;
+    localStorage.setItem(`zarins_profile_${user.name}`, JSON.stringify({
+      step, pace, selectedHabits, checkedToday, activeDays,
+    }));
+  }, [user, step, pace, selectedHabits, checkedToday, activeDays]);
+
+  const handleLogin = (name) => {
+    const u = { name };
+    localStorage.setItem("zarins_user", JSON.stringify(u));
+    setUser(u);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("zarins_user");
+    setUser(null);
+    setStep("intro");
+    setPace(null);
+    setSelectedHabits([]);
+    setCheckedToday([]);
+    setActiveDays([]);
+  };
 
   const linkTag = <link rel="stylesheet" href={FONT_LINK} />;
 
@@ -398,6 +496,11 @@ export default function App() {
     width: "100%",
     maxWidth: 420,
   };
+
+  // ---------- AUTH ----------
+  if (!user) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
 
   // ---------- INTRO ----------
   if (step === "intro") {
@@ -579,12 +682,25 @@ export default function App() {
       <div style={cardStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Logo />
-          <span style={{
-            fontFamily: "IBM Plex Mono, monospace", fontSize: 10.5, color: "#7A8B6F",
-            background: "#EDE6D6", padding: "5px 10px", borderRadius: 20
-          }}>
-            {paceLabel}
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{
+              fontFamily: "IBM Plex Mono, monospace", fontSize: 10.5, color: "#7A8B6F",
+              background: "#EDE6D6", padding: "5px 10px", borderRadius: 20
+            }}>
+              {user?.name}
+            </span>
+            <button
+              onClick={handleLogout}
+              title="Выйти"
+              style={{
+                background: "none", border: "1.5px solid #DCD5C4", borderRadius: 8,
+                padding: "5px 10px", cursor: "pointer",
+                fontFamily: "IBM Plex Mono, monospace", fontSize: 10.5, color: "#8A8474",
+              }}
+            >
+              Выйти
+            </button>
+          </div>
         </div>
 
         <div style={{ marginTop: 36 }}>
