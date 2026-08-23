@@ -738,8 +738,8 @@ export default function App() {
           ))}
         </div>
 
-        {dashTab === "habits" ? (
-          <div style={{ marginTop: 24 }}>
+        {dashTab === "habits" && (
+<div style={{ marginTop: 24 }}>
             <h3 style={{ fontFamily: "Fraunces, serif", fontSize: 19, fontWeight: 600 }}>Сегодня</h3>
             <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
               {chosen.map((h) => {
@@ -792,8 +792,9 @@ export default function App() {
               </p>
             </div>
           </div>
-        ) : dashTab === "meals" ? (
-          <div style={{ marginTop: 24 }}>
+        )}
+        {dashTab === "meals" && (
+<div style={{ marginTop: 24 }}>
             <h3 style={{ fontFamily: "Fraunces, serif", fontSize: 19, fontWeight: 600 }}>Идеи блюд</h3>
             <p style={{ fontSize: 13, color: "#5C5647", marginTop: 4, lineHeight: 1.5 }}>
               Вдохновение, а не правила — выбирай то, что подходит тебе сегодня.
@@ -833,7 +834,8 @@ export default function App() {
               ))}
             </div>
           </div>
-        ) : dashTab === "workout" ? <WorkoutTab /> : null}
+        )}
+        {dashTab === "workout" && <WorkoutTab />}
 
         <div style={{
           marginTop: 20, padding: "14px 16px", background: "#EDE6D6", borderRadius: 12,
