@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Dumbbell, ChevronDown, ChevronUp, Check, Flame, Clock } from "lucide-react";
 
 const WARMUP_EXERCISES = [
-  { id: "w1", name: "Ходьба на месте или лёгкий бег", reps: "3 минуты" },
-  { id: "w2", name: "Круговые вращения руками и плечами", reps: "10 в каждую сторону" },
-  { id: "w3", name: "Наклоны корпуса в стороны", reps: "10 повторов" },
-  { id: "w4", name: "Вращения тазом", reps: "10 в каждую сторону" },
-  { id: "w5", name: "Приседания без веса (медленно)", reps: "10–15 повторов" },
-  { id: "w6", name: "Выпады на месте", reps: "8–10 на ногу" },
+  { id: "w1", name: "Ходьба на месте",                   reps: "3 минуты",             img: "/vingrinajumi/walk_in_place.jpg" },
+  { id: "w2", name: "Вращения руками и плечами",         reps: "10 в каждую сторону",  img: "/vingrinajumi/arm_rotations.jpg" },
+  { id: "w3", name: "Наклоны корпуса в стороны",         reps: "10 повторов",           img: "/vingrinajumi/hip_tilts.jpg" },
+  { id: "w4", name: "Вращения бёдрами",                  reps: "10 в каждую сторону",  img: null },
+  { id: "w5", name: "Разминочные приседания",            reps: "10–15 повторов",        img: "/vingrinajumi/warmup_squats.jpg" },
+  { id: "w6", name: "Выпады вперёд (Lunges)",            reps: "8–10 на ногу",          img: "/vingrinajumi/lunges.jpg" },
 ];
 
 const WORKOUT_COMPLEXES = [
@@ -17,13 +17,13 @@ const WORKOUT_COMPLEXES = [
     freq: "2–3 × в неделю",
     accent: "#C97D5D",
     exercises: [
-      { name: "Приседания классические",                    sets: 3, reps: "15–20",           rest: "45–60 сек", tip: "Колени не выходят за носки" },
-      { name: "Ягодичный мостик",                           sets: 3, reps: "15–20",           rest: "45 сек",    tip: "Задержка вверху 1–2 сек" },
-      { name: "Выпады вперёд",                              sets: 3, reps: "12 на ногу",      rest: "45–60 сек", tip: "Можно с гантелями" },
-      { name: "Приседания сумо (плие)",                     sets: 3, reps: "15",              rest: "45 сек",    tip: "Стопы шире плеч, носки наружу" },
-      { name: "Отведение ноги назад (стоя на четвереньках)",sets: 3, reps: "15 на ногу",      rest: "30–45 сек", tip: "Медленно, без рывков" },
-      { name: "Румынская тяга",                             sets: 3, reps: "12–15",           rest: "60 сек",    tip: "Спина прямая, отвод таза назад" },
-      { name: "Ходьба в полуприседе с резинкой",            sets: 3, reps: "20 шагов",        rest: "30–45 сек", tip: "Опционально — при наличии резинки" },
+      { name: "Разминочные приседания",                       sets: 3, reps: "15–20",      rest: "45–60 сек", tip: "Выполни приседание, вытяни руки вперёд. Поднимись и повтори.",                     img: "/vingrinajumi/warmup_squats.jpg" },
+      { name: "Подъём бёдер (Glute Bridge)",                  sets: 3, reps: "15–20",      rest: "45 сек",    tip: "Удерживай спину прижатой к полу и выполняй движения контролируемо.",             img: "/vingrinajumi/glute_bridge.jpg" },
+      { name: "Выпады вперёд (Lunges)",                       sets: 3, reps: "12 на ногу", rest: "45–60 сек", tip: "Колено должно быть над лодыжкой, спина прямая, смотри прямо вперёд.",            img: "/vingrinajumi/lunges.jpg" },
+      { name: "Приседания сумо (Плие)",                       sets: 3, reps: "15",         rest: "45 сек",    tip: "Ступни шире бёдер, носки наружу. Колени следуют направлению носков.",             img: "/vingrinajumi/sumo_squats.jpg" },
+      { name: "Отведение ноги назад (Glute Kickback)",        sets: 3, reps: "15 на ногу", rest: "30–45 сек", tip: "Спина прямая, живот напряжён. Начни с одной ноги, затем смени сторону.",          img: "/vingrinajumi/glute_kickback.jpg" },
+      { name: "Приседание на одной ноге (нога на стуле)",    sets: 3, reps: "12–15",      rest: "60 сек",    tip: "Колено не заходит за носки, взгляд направлен вперёд.",                            img: "/vingrinajumi/single_leg_squat.jpg" },
+      { name: "Приседания с прыжком (Squat Jump)",            sets: 3, reps: "20 прыжков", rest: "30–45 сек", tip: "Колени не заходят за носки. Спина прямая, живот напряжён.",                      img: "/vingrinajumi/squat_jump.jpg" },
     ],
   },
   {
@@ -32,13 +32,13 @@ const WORKOUT_COMPLEXES = [
     freq: "3–4 × в неделю",
     accent: "#7A8B6F",
     exercises: [
-      { name: "Планка классическая",               sets: 3, reps: "30–45 сек",           rest: "30–45 сек", tip: "Тело — прямая линия" },
-      { name: "Скручивания на пресс",              sets: 3, reps: "15–20",               rest: "30–45 сек", tip: "Не тянуть шею руками" },
-      { name: "Боковая планка",                    sets: 3, reps: "20–30 сек / сторону", rest: "30 сек",    tip: "Держать таз ровно" },
-      { name: "«Велосипед» (локти к колену)",      sets: 3, reps: "20 (по 10/сторону)",  rest: "30–45 сек", tip: "Медленный контролируемый темп" },
-      { name: "Подъём ног лёжа",                   sets: 3, reps: "12–15",               rest: "45 сек",    tip: "Поясница прижата к полу" },
-      { name: "Русские скручивания",               sets: 3, reps: "20",                  rest: "30–45 сек", tip: "Можно с лёгким весом" },
-      { name: "Вакуум живота (втягивание)",        sets: 3, reps: "15–20 сек",           rest: "30 сек",    tip: "Выполнять на выдохе" },
+      { name: "Планка (Plank)",                               sets: 3, reps: "30–45 сек",        rest: "30–45 сек", tip: "Встань на локти и кончики пальцев. Удерживай спину прямой всё время.",        img: "/vingrinajumi/plank.jpg" },
+      { name: "Обратные скручивания (Reverse Crunch)",        sets: 3, reps: "15–20",             rest: "30–45 сек", tip: "Удерживай спину прижатой к полу всё время. Движения медленные и контролируемые.", img: "/vingrinajumi/reverse_crunch.jpg" },
+      { name: "Боковая планка (Side Plank)",                  sets: 3, reps: "20–30 сек / сторону",rest: "30 сек",  tip: "Удерживай тело в прямой линии и живот напряжённым всё время.",                img: "/vingrinajumi/side_plank.jpg" },
+      { name: "Скручивания «велосипед» (Bicycle Crunches)",   sets: 3, reps: "30–60 сек",        rest: "30–45 сек", tip: "Удерживай спину на полу и выполняй контролируемые движения всё время.",       img: "/vingrinajumi/bicycle_crunches.jpg" },
+      { name: "Подъём ног лёжа (Leg Raises)",                 sets: 3, reps: "12–15",             rest: "45 сек",    tip: "Удерживай спину на полу, не напрягай шею. Дыши равномерно.",                  img: "/vingrinajumi/leg_raises.jpg" },
+      { name: "Русские скручивания (Russian Twists)",         sets: 3, reps: "20",                rest: "30–45 сек", tip: "Удерживай спину в прямой линии и живот напряжённым всё время.",              img: "/vingrinajumi/russian_twists.jpg" },
+      { name: "Подтягивание колен к груди (Mountain Climbers)",sets: 3, reps: "30–40 сек",       rest: "30 сек",    tip: "Спина прямая, не прогибай живот. Дыши ритмично.",                            img: "/vingrinajumi/mountain_climbers.jpg" },
     ],
   },
   {
@@ -47,12 +47,12 @@ const WORKOUT_COMPLEXES = [
     freq: "2 × в неделю",
     accent: "#4A5540",
     exercises: [
-      { name: "Отжимания от пола (классические)",          sets: 3, reps: "8–15",  rest: "60 сек",    tip: "Можно с колен при слабой подготовке" },
-      { name: "Отжимания от скамьи/дивана (наклонные)",    sets: 3, reps: "10–12", rest: "45–60 сек", tip: "Руки чуть шире плеч" },
-      { name: "Жим гантелей лёжа",                         sets: 3, reps: "10–12", rest: "60 сек",    tip: "При наличии инвентаря" },
-      { name: "Разведение рук с гантелями лёжа",           sets: 3, reps: "12–15", rest: "45 сек",    tip: "Лёгкий вес, контроль амплитуды" },
-      { name: "«Молитва» (сведение ладоней перед грудью)", sets: 3, reps: "15–20", rest: "30 сек",    tip: "Статическое напряжение груди" },
-      { name: "Отжимания узким хватом (трицепс + грудь)",  sets: 3, reps: "8–12",  rest: "60 сек",    tip: "Локти ближе к корпусу" },
+      { name: "Отжимания с колен (Knee Push-Up)",                       sets: 3, reps: "8–15",  rest: "60 сек",    tip: "Движения выполняй с колен. Спина прямая, живот напряжён.",                     img: "/vingrinajumi/knee_pushup.jpg" },
+      { name: "Жим гантелей стоя над головой (Dumbbell Shoulder Press)",sets: 3, reps: "8–15",  rest: "45–60 сек", tip: "Удерживай спину прямой, живот напряжённым и движения контролируемыми.",      img: "/vingrinajumi/dumbbell_shoulder_press.jpg" },
+      { name: "Жим гантелей лёжа на полу (Dumbbell Floor Press)",       sets: 3, reps: "8–15",  rest: "60 сек",    tip: "Удерживай спину на полу и выполняй движения контролируемо. Локти близко к бокам.", img: "/vingrinajumi/dumbbell_floor_press.jpg" },
+      { name: "Разведение гантелей лёжа на полу (Dumbbell Floor Fly)",  sets: 3, reps: "8–15",  rest: "45 сек",    tip: "Удерживай спину на полу, движения контролируемые. Локти слегка согнуты.",     img: "/vingrinajumi/dumbbell_floor_fly.jpg" },
+      { name: "Пуловер с гантелью лёжа на полу (Dumbbell Pullover)",    sets: 3, reps: "10–15", rest: "45 сек",    tip: "Удерживай спину на полу, движения контролируемые. Локти неподвижны.",         img: "/vingrinajumi/dumbbell_pullover.jpg" },
+      { name: "Отжимания с колен — узкий хват",                        sets: 3, reps: "8–12",  rest: "60 сек",    tip: "Движения выполняй с колен. Локти ближе к бокам тела.",                        img: "/vingrinajumi/knee_pushup.jpg" },
     ],
   },
 ];
@@ -64,7 +64,7 @@ const WEEKLY_SCHEDULE = [
   { label: "Живот и талия + кардио",          complexIds: ["waist"],           rest: false },
   { label: "Отдых или растяжка",              complexIds: [],                  rest: true },
   { label: "Грудь",                           complexIds: ["chest"],           rest: false },
-  { label: "Ягодицы и бёдра + живот (комбо)",complexIds: ["glutes", "waist"], rest: false },
+  { label: "Ягодицы + живот (комбо)",         complexIds: ["glutes", "waist"], rest: false },
   { label: "Кардио — ходьба, велосипед",      complexIds: [],                  rest: true },
 ];
 
@@ -93,26 +93,31 @@ function WarmupCard({ warmupDone, onToggle, open, onOpenToggle }) {
           {WARMUP_EXERCISES.map((ex, i) => {
             const done = warmupDone[ex.id];
             return (
-              <button
+              <div
                 key={ex.id}
                 onClick={() => onToggle(ex.id)}
                 style={{
-                  width: "100%", display: "flex", alignItems: "center", gap: 12,
-                  padding: "11px 16px", background: "none", border: "none",
-                  borderBottom: i < WARMUP_EXERCISES.length - 1 ? "1px solid #F5F1EA" : "none",
-                  cursor: "pointer", textAlign: "left",
+                  width: "100%", borderBottom: i < WARMUP_EXERCISES.length - 1 ? "1px solid #F5F1EA" : "none",
+                  cursor: "pointer", overflow: "hidden",
                 }}
               >
-                <div style={{ width: 22, height: 22, borderRadius: "50%", flexShrink: 0, border: done ? "none" : "1.5px solid #DCD5C4", background: done ? "#4A5540" : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {done && <Check size={12} color="#FAF7F0" strokeWidth={3} />}
+                {ex.img && (
+                  <div style={{ width: "100%", height: 165, background: "#EDE6D6", overflow: "hidden" }}>
+                    <img src={ex.img} alt={ex.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", opacity: done ? 0.4 : 1, transition: "opacity 0.2s", display: "block" }} />
+                  </div>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 16px" }}>
+                  <div style={{ width: 22, height: 22, borderRadius: "50%", flexShrink: 0, border: done ? "none" : "1.5px solid #DCD5C4", background: done ? "#4A5540" : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {done && <Check size={12} color="#FAF7F0" strokeWidth={3} />}
+                  </div>
+                  <span style={{ flex: 1, fontSize: 13.5, color: done ? "#8A8474" : "#2E2B26", textDecoration: done ? "line-through" : "none" }}>
+                    {ex.name}
+                  </span>
+                  <span style={{ fontSize: 11, color: "#8A8474", fontFamily: "IBM Plex Mono, monospace", flexShrink: 0 }}>
+                    {ex.reps}
+                  </span>
                 </div>
-                <span style={{ flex: 1, fontSize: 13.5, color: done ? "#8A8474" : "#2E2B26", textDecoration: done ? "line-through" : "none" }}>
-                  {ex.name}
-                </span>
-                <span style={{ fontSize: 11, color: "#8A8474", fontFamily: "IBM Plex Mono, monospace", flexShrink: 0 }}>
-                  {ex.reps}
-                </span>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -163,7 +168,17 @@ function ComplexCard({ complex, isToday, open, onToggle, completedSets, onToggle
             const done = completedSets[key] || 0;
             const exAllDone = done >= ex.sets;
             return (
-              <div key={i} style={{ padding: "13px 16px", borderBottom: i < complex.exercises.length - 1 ? "1px solid #F5F1EA" : "none" }}>
+              <div key={i} style={{ borderBottom: i < complex.exercises.length - 1 ? "1px solid #F5F1EA" : "none", overflow: "hidden" }}>
+                {ex.img && (
+                  <div style={{ width: "100%", height: 165, overflow: "hidden", background: "#EDE6D6" }}>
+                    <img
+                      src={ex.img}
+                      alt={ex.name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block", opacity: exAllDone ? 0.45 : 1, transition: "opacity 0.2s" }}
+                    />
+                  </div>
+                )}
+                <div style={{ padding: "12px 16px 13px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                   <span style={{ fontSize: 13.5, fontWeight: 500, color: exAllDone ? "#8A8474" : "#2E2B26", textDecoration: exAllDone ? "line-through" : "none", lineHeight: 1.35, flex: 1 }}>
                     {ex.name}
@@ -197,6 +212,7 @@ function ComplexCard({ complex, isToday, open, onToggle, completedSets, onToggle
                       <Clock size={11} /> {ex.rest}
                     </span>
                   )}
+                </div>
                 </div>
               </div>
             );
